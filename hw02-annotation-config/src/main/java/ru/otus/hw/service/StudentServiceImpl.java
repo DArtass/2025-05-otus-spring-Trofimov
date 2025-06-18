@@ -1,17 +1,14 @@
 package ru.otus.hw.service;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.domain.Student;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StudentServiceImpl implements StudentService {
 
-    IOService ioService;
+    private final IOService ioService;
 
     @Override
     public Student determineCurrentStudent() {

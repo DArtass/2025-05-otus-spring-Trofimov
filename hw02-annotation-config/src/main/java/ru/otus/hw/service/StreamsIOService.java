@@ -1,7 +1,5 @@
 package ru.otus.hw.service;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +8,12 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 @Service
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StreamsIOService implements IOService {
-    static int MAX_ATTEMPTS = 10;
+    private static final int MAX_ATTEMPTS = 10;
 
-    PrintStream printStream;
+    private final PrintStream printStream;
 
-    Scanner scanner;
+    private final Scanner scanner;
 
     public StreamsIOService(@Value("#{T(System).out}") PrintStream printStream,
                             @Value("#{T(System).in}") InputStream inputStream) {

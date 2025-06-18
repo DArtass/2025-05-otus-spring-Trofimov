@@ -1,20 +1,17 @@
 package ru.otus.hw.service;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.config.TestConfig;
 import ru.otus.hw.domain.TestResult;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ResultServiceImpl implements ResultService {
 
-    TestConfig testConfig;
+    private final TestConfig testConfig;
 
-    IOService ioService;
+    private final IOService ioService;
 
     @Override
     public void showResult(TestResult testResult) {

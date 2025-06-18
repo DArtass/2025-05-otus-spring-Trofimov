@@ -2,9 +2,7 @@ package ru.otus.hw.dao;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw.config.TestFileNameProvider;
 import ru.otus.hw.dao.dto.QuestionDto;
@@ -19,9 +17,8 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CsvQuestionDao implements QuestionDao {
-    TestFileNameProvider fileNameProvider;
+    private final TestFileNameProvider fileNameProvider;
 
     @Override
     public List<Question> findAll() {

@@ -1,8 +1,6 @@
 package ru.otus.hw.service;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Question;
@@ -11,12 +9,11 @@ import ru.otus.hw.domain.TestResult;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TestServiceImpl implements TestService {
 
-    IOService ioService;
+    private final IOService ioService;
 
-    QuestionDao questionDao;
+    private final QuestionDao questionDao;
 
     @Override
     public TestResult executeTestFor(Student student) {
@@ -25,7 +22,7 @@ public class TestServiceImpl implements TestService {
         var questions = questionDao.findAll();
         var testResult = new TestResult(student);
 
-        for (var question: questions) {
+        for (var question : questions) {
             var isAnswerValid = askQuestion(question);
             testResult.applyAnswer(question, isAnswerValid);
         }

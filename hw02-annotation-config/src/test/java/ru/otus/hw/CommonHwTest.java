@@ -1,7 +1,5 @@
 package ru.otus.hw;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,10 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 class CommonHwTest {
 
-    static String CONFIGURATION_ANNOTATION_NAME = "org.springframework.context.annotation.Configuration";
+    private static final String CONFIGURATION_ANNOTATION_NAME = "org.springframework.context.annotation.Configuration";
 
     @Test
     void shouldNotContainConfigurationAnnotationAboveItSelf() {

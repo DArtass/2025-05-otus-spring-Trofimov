@@ -1,22 +1,17 @@
 package ru.otus.hw.domain;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TestResult {
-    Student student;
+    private final Student student;
 
-    List<Question> answeredQuestions;
+    private final List<Question> answeredQuestions;
 
-    @NonFinal
-    int rightAnswersCount;
+    private int rightAnswersCount;
 
     public TestResult(Student student) {
         this.student = student;
