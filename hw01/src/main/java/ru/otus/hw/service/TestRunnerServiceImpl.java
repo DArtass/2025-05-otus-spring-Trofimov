@@ -15,6 +15,7 @@ public class TestRunnerServiceImpl implements TestRunnerService {
         try {
             testService.executeTest();
         } catch (QuestionReadException e) {
+            System.out.println("Ошибка при чтении вопросов: " + e.getMessage());
             log.error("Ошибка при чтении вопросов: {}", e.getMessage(), e);
         }
     }
