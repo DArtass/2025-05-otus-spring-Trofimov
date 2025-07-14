@@ -16,6 +16,8 @@ public class TestRunnerServiceImpl implements TestRunnerService {
 
     private final ResultService resultService;
 
+    private final IOService ioService;
+
     @Override
     public void run() {
         var student = studentService.determineCurrentStudent();
@@ -23,8 +25,14 @@ public class TestRunnerServiceImpl implements TestRunnerService {
             var testResult = testService.executeTestFor(student);
             resultService.showResult(testResult);
         } catch (QuestionReadException e) {
-            System.out.println("Ошибка при чтении вопросов: " + e.getMessage());
-            log.error("Ошибка при чтении вопросов: {}", e.getMessage(), e);
+            ioService.printFormattedLine("Error reading questions: %s", e.getMessage());
+            log.error("Error reading questions: {}", e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            ioService.printFormattedLine("Input error: %s", e.getMessage());
+            log.error("Input error: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            ioService.printFormattedLine("Unexpected error occurred: %s", e.getMessage());
+            log.error("Unexpected error during test execution: {}", e.getMessage(), e);
         }
     }
 }
