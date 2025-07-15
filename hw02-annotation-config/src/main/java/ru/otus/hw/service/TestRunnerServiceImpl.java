@@ -25,13 +25,13 @@ public class TestRunnerServiceImpl implements TestRunnerService {
             var testResult = testService.executeTestFor(student);
             resultService.showResult(testResult);
         } catch (QuestionReadException e) {
-            ioService.printFormattedLine("Error reading questions: %s", e.getMessage());
+            ioService.printFormattedLine("Error reading questions");
             log.error("Error reading questions: {}", e.getMessage(), e);
         } catch (IllegalArgumentException e) {
-            ioService.printFormattedLine("Input error: %s", e.getMessage());
+            ioService.printFormattedLine("Input error");
             log.error("Input error: {}", e.getMessage(), e);
         } catch (Exception e) {
-            ioService.printFormattedLine("Unexpected error occurred: %s", e.getMessage());
+            ioService.printFormattedLine("Unexpected error occurred");
             log.error("Unexpected error during test execution: {}", e.getMessage(), e);
         }
     }
