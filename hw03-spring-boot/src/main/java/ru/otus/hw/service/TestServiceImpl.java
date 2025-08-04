@@ -40,7 +40,7 @@ public class TestServiceImpl implements TestService {
             ioService.printFormattedLine("%d. %s", i + 1, answers.get(i).text());
         }
 
-        int userAnswerIndex = ioService.readIntForRangeWithPrompt(
+        int userAnswerIndex = ioService.readIntForRangeWithPromptLocalized(
                 1,
                 answers.size(),
                 "TestService.answer.prompt",
