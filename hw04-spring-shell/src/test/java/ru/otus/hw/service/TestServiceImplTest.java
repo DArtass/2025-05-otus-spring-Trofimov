@@ -2,8 +2,12 @@ package ru.otus.hw.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.TestPropertySource;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
@@ -16,23 +20,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@TestPropertySource(properties = {"spring.shell.interactive.enabled=false"})
 class TestServiceImplTest {
 
-    @Mock
+    @Autowired
     private LocalizedIOService ioService;
-
-    @Mock
+    @Autowired
     private QuestionDao questionDao;
-
+    @Autowired
     private TestServiceImpl testService;
 
     @BeforeEach
     void setUp() {
-        try (var ignored = MockitoAnnotations.openMocks(this)) {
-            testService = new TestServiceImpl(ioService, questionDao);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        reset(ioService, questionDao);
     }
 
     @Test
@@ -44,7 +45,7 @@ class TestServiceImplTest {
         var questions = List.of(question);
 
         when(questionDao.findAll()).thenReturn(questions);
-        when(ioService.readIntForRangeWithPrompt(anyInt(), anyInt(), anyString(), anyString())).thenReturn(1);
+        when(ioService.readIntForRangeWithPromptLocalized(anyInt(), anyInt(), anyString(), anyString())).thenReturn(1);
 
         TestResult result = testService.executeTestFor(student);
 
@@ -59,7 +60,7 @@ class TestServiceImplTest {
         verify(ioService).printFormattedLineLocalized("TestService.question.prompt", "Test question?");
         verify(ioService).printFormattedLine("%d. %s", 1, "Answer 1");
         verify(ioService).printFormattedLine("%d. %s", 2, "Answer 2");
-        verify(ioService).readIntForRangeWithPrompt(eq(1), eq(2), eq("TestService.answer.prompt"), eq("TestService.answer.error"));
+        verify(ioService).readIntForRangeWithPromptLocalized(eq(1), eq(2), eq("TestService.answer.prompt"), eq("TestService.answer.error"));
     }
 
     @Test
@@ -71,7 +72,7 @@ class TestServiceImplTest {
         var questions = List.of(question);
 
         when(questionDao.findAll()).thenReturn(questions);
-        when(ioService.readIntForRangeWithPrompt(anyInt(), anyInt(), anyString(), anyString())).thenReturn(2);
+        when(ioService.readIntForRangeWithPromptLocalized(anyInt(), anyInt(), anyString(), anyString())).thenReturn(2);
 
         TestResult result = testService.executeTestFor(student);
 
@@ -95,7 +96,7 @@ class TestServiceImplTest {
         var questions = List.of(question1, question2);
 
         when(questionDao.findAll()).thenReturn(questions);
-        when(ioService.readIntForRangeWithPrompt(anyInt(), anyInt(), anyString(), anyString()))
+        when(ioService.readIntForRangeWithPromptLocalized(anyInt(), anyInt(), anyString(), anyString()))
                 .thenReturn(1)
                 .thenReturn(1);
 
@@ -105,5 +106,26 @@ class TestServiceImplTest {
         assertEquals(student, result.getStudent());
         assertEquals(2, result.getAnsweredQuestions().size());
         assertEquals(1, result.getRightAnswersCount());
+    }
+
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        @Primary
+        public LocalizedIOService localizedIOService() {
+            return mock(LocalizedIOService.class);
+        }
+
+        @Bean
+        @Primary
+        public QuestionDao questionDao() {
+            return mock(QuestionDao.class);
+        }
+
+        @Bean
+        @Primary
+        public TestServiceImpl testService(LocalizedIOService ioService, QuestionDao questionDao) {
+            return new TestServiceImpl(ioService, questionDao);
+        }
     }
 }

@@ -1,10 +1,13 @@
-
 package ru.otus.hw.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.TestPropertySource;
 import ru.otus.hw.config.TestFileNameProvider;
 import ru.otus.hw.domain.Question;
 import ru.otus.hw.exceptions.QuestionReadException;
@@ -12,23 +15,30 @@ import ru.otus.hw.exceptions.QuestionReadException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@TestPropertySource(properties = {"spring.shell.interactive.enabled=false"})
 class CsvQuestionDaoTest {
 
-    @Mock
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        @Primary
+        public TestFileNameProvider testFileNameProvider() {
+            return mock(TestFileNameProvider.class);
+        }
+    }
+
+    @Autowired
     private TestFileNameProvider fileNameProvider;
 
+    @Autowired
     private CsvQuestionDao questionDao;
 
     @BeforeEach
     void setUp() {
-        try (var ignored = MockitoAnnotations.openMocks(this)) {
-            questionDao = new CsvQuestionDao(fileNameProvider);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        reset(fileNameProvider);
     }
 
     @Test
