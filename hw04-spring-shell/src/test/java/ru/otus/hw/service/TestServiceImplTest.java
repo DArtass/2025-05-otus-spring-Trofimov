@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
@@ -24,9 +25,9 @@ import static org.mockito.Mockito.*;
 @TestPropertySource(properties = {"spring.shell.interactive.enabled=false"})
 class TestServiceImplTest {
 
-    @Autowired
+    @MockitoBean
     private LocalizedIOService ioService;
-    @Autowired
+    @MockitoBean
     private QuestionDao questionDao;
     @Autowired
     private TestServiceImpl testService;
