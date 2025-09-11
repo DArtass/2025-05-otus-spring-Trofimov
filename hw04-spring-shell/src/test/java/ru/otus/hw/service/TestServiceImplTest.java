@@ -1,6 +1,5 @@
 package ru.otus.hw.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +18,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(classes = TestServiceImpl.class)
 @TestPropertySource(properties = {"spring.shell.interactive.enabled=false"})
 class TestServiceImplTest {
 
@@ -31,11 +36,6 @@ class TestServiceImplTest {
     private QuestionDao questionDao;
     @Autowired
     private TestServiceImpl testService;
-
-    @BeforeEach
-    void setUp() {
-        reset(ioService, questionDao);
-    }
 
     @Test
     void executeTestFor_ShouldReturnCorrectTestResult() {
